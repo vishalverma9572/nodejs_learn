@@ -23,6 +23,7 @@ exports.getIndex = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.id;
   Product.findById(prodId, product => {
+    
     res.render('shop/product-detail', {
       product: product,
       pageTitle: product.title,

@@ -15,7 +15,7 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const product = new Product( null, title, imageUrl, description, price);
   product.save();
-  res.redirect('/');
+  res.redirect('/admin/products?reload=true');
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -52,10 +52,16 @@ exports.postEditProduct = (req, res, next) => {
   );
   
   updatedProduct.edit();
-  res.redirect('/admin/products');
+  res.redirect('/admin/products?reload=true');
+  
 };
 
 exports.getProducts = (req, res, next) => {
+  const rld = req.query.reload;
+  if(rld){
+    
+    res.redirect('/admin/products')
+  }
   Product.fetchAll(products => {
     res.render('admin/products', {
       prods: products,
@@ -68,5 +74,5 @@ exports.getProducts = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.deleteById(prodId);
-  res.redirect('/admin/products');
+  res.redirect('/admin/products?reload=true');
 };
